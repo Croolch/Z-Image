@@ -392,16 +392,25 @@ def create_ui():
 
 
 if __name__ == "__main__":
+    import os
+    
     # Pre-load the model
     print("[Z-Image] Starting Gradio app...")
     load_pipeline()
     
     # Create and launch the UI
     demo = create_ui()
+    
+    # 获取阿里云PAI平台的root_path（用于反向代理路径配置）
+    root_path = os.environ.get("GRADIO_ROOT_PATH", "")
+    if root_path:
+        print(f"[Z-Image] Using root_path: {root_path}")
+    
     demo.launch(
         server_name="0.0.0.0",
         server_port=7860,
         share=False,
         show_error=True,
+        root_path=root_path,  # 阿里云PAI平台反向代理路径
     )
 
